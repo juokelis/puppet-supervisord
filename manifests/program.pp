@@ -48,18 +48,34 @@ define supervisord::program(
 
 # parameter validation
   validate_legacy(String, 'validate_string', $command)
-  validate_legacy(Enum['running', 'stopped', 'removed', 'unmanaged'], 'validate_re', $ensure_process, ['running', 'stopped', 'removed', 'unmanaged'])
+  validate_legacy(
+    Enum['running', 'stopped', 'removed', 'unmanaged'],
+    'validate_re',
+    $ensure_process,
+    ['running', 'stopped', 'removed', 'unmanaged']
+  )
   if $cfgreload { validate_legacy(Boolean, 'validate_bool', $cfgreload) }
   if $process_name { validate_legacy(String, 'validate_string', $process_name) }
   if $numprocs { if $numprocs !~ Integer { validate_legacy(String, 'validate_re', $numprocs, ['^\d+'])} }
   if $numprocs_start { if $numprocs_start !~ Integer { validate_legacy(String, 'validate_re', $numprocs_start, ['^\d+'])} }
   if $priority { if $priority !~ Integer { validate_legacy(String, 'validate_re', $priority, ['^\d+']) } }
   if $autostart { if $autostart !~ Boolean { validate_legacy(Enum['true', 'false'], 'validate_re', $autostart, ['true', 'false']) } }
-  if $autorestart { if $autorestart !~ Boolean { validate_legacy(Enum['true', 'false', 'unexpected'], 'validate_re', $autorestart, ['true', 'false', 'unexpected']) } }
+  if $autorestart {
+    if $autorestart !~ Boolean {
+      validate_legacy(Enum['true', 'false', 'unexpected'], 'validate_re', $autorestart, ['true', 'false', 'unexpected'])
+    }
+  }
   if $startsecs { if $startsecs !~ Integer { validate_legacy(String, 'validate_re', $startsecs, ['^\d+'])} }
   if $startretries { if $startretries !~ Integer { validate_legacy(String, 'validate_re', $startretries, ['^\d+'])} }
   if $exitcodes { validate_legacy(String, 'validate_string', $exitcodes)}
-  if $stopsignal { validate_legacy(Enum['TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'], 'validate_re', $stopsignal, ['TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2']) }
+  if $stopsignal {
+    validate_legacy(
+      Enum['TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2'],
+      'validate_re',
+      $stopsignal,
+      ['TERM', 'HUP', 'INT', 'QUIT', 'KILL', 'USR1', 'USR2']
+    )
+  }
   if $stopwaitsecs { if $stopwaitsecs !~ Integer { validate_legacy(String, 'validate_re', $stopwaitsecs, ['^\d+'])} }
   if $stopasgroup { validate_legacy(Boolean, 'validate_bool', $stopasgroup) }
   if $killasgroup { validate_legacy(Boolean, 'validate_bool', $killasgroup) }
@@ -67,12 +83,16 @@ define supervisord::program(
   if $redirect_stderr { validate_legacy(Boolean, 'validate_bool', $redirect_stderr) }
   validate_legacy(String, 'validate_string', $stdout_logfile)
   if $stdout_logfile_maxbytes { validate_legacy(String, 'validate_string', $stdout_logfile_maxbytes) }
-  if $stdout_logfile_backups { if $stdout_logfile_backups !~ Integer { validate_legacy(String, 'validate_re', $stdout_logfile_backups, ['^\d+'])} }
+  if $stdout_logfile_backups {
+    if $stdout_logfile_backups !~ Integer { validate_legacy(String, 'validate_re', $stdout_logfile_backups, ['^\d+'])}
+  }
   if $stdout_capture_maxbytes { validate_legacy(String, 'validate_string', $stdout_capture_maxbytes) }
   if $stdout_events_enabled { validate_legacy(Boolean, 'validate_bool', $stdout_events_enabled) }
   validate_legacy(String, 'validate_string', $stderr_logfile)
   if $stderr_logfile_maxbytes { validate_legacy(String, 'validate_string', $stderr_logfile_maxbytes) }
-  if $stderr_logfile_backups { if $stderr_logfile_backups !~ Integer { validate_legacy(String, 'validate_re', $stderr_logfile_backups, ['^\d+'])} }
+  if $stderr_logfile_backups {
+    if $stderr_logfile_backups !~ Integer { validate_legacy(String, 'validate_re', $stderr_logfile_backups, ['^\d+'])}
+  }
   if $stderr_capture_maxbytes { validate_legacy(String, 'validate_string', $stderr_capture_maxbytes) }
   if $stderr_events_enabled { validate_legacy(Boolean, 'validate_bool', $stderr_events_enabled) }
   if $directory { validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $directory) }

@@ -59,7 +59,9 @@ define supervisord::fcgi_program(
   if $numprocs_start { if $numprocs_start !~ Integer { validate_legacy('Optional[String]', 'validate_re', $numprocs_start, ['^\d+'])} }
   if $priority { if $priority !~ Integer { validate_legacy('Optional[String]', 'validate_re', $priority, ['^\d+']) } }
   if $autostart { if $autostart !~ Boolean { validate_legacy('Optional[String]', 'validate_re', $autostart, ['true', 'false']) } }
-  if $autorestart { if $autorestart !~ Boolean { validate_legacy('Optional[String]', 'validate_re', $autorestart, ['true', 'false', 'unexpected']) } }
+  if $autorestart {
+    if $autorestart !~ Boolean { validate_legacy('Optional[String]', 'validate_re', $autorestart, ['true', 'false', 'unexpected']) }
+  }
   if $startsecs { if $startsecs !~ Integer { validate_legacy('Optional[String]', 'validate_re', $startsecs, ['^\d+'])} }
   if $startretries { if $startretries !~ Integer { validate_legacy('Optional[String]', 'validate_re', $startretries, ['^\d+'])} }
   if $exitcodes { validate_legacy(String, 'validate_string', $exitcodes)}
@@ -71,12 +73,16 @@ define supervisord::fcgi_program(
   if $redirect_stderr { validate_legacy(Boolean, 'validate_bool', $redirect_stderr) }
   validate_legacy(String, 'validate_string', $stdout_logfile)
   if $stdout_logfile_maxbytes { validate_legacy(String, 'validate_string', $stdout_logfile_maxbytes) }
-  if $stdout_logfile_backups { if $stdout_logfile_backups !~ Integer { validate_legacy('Optional[String]', 'validate_re', $stdout_logfile_backups, ['^\d+'])} }
+  if $stdout_logfile_backups {
+    if $stdout_logfile_backups !~ Integer { validate_legacy('Optional[String]', 'validate_re', $stdout_logfile_backups, ['^\d+'])}
+  }
   if $stdout_capture_maxbytes { validate_legacy(String, 'validate_string', $stdout_capture_maxbytes) }
   if $stdout_events_enabled { validate_legacy(Boolean, 'validate_bool', $stdout_events_enabled) }
   validate_legacy(String, 'validate_string', $stderr_logfile)
   if $stderr_logfile_maxbytes { validate_legacy(String, 'validate_string', $stderr_logfile_maxbytes) }
-  if $stderr_logfile_backups { if $stderr_logfile_backups !~ Integer { validate_legacy('Optional[String]', 'validate_re', $stderr_logfile_backups, ['^\d+'])} }
+  if $stderr_logfile_backups {
+    if $stderr_logfile_backups !~ Integer { validate_legacy('Optional[String]', 'validate_re', $stderr_logfile_backups, ['^\d+'])}
+  }
   if $stderr_capture_maxbytes { validate_legacy(String, 'validate_string', $stderr_capture_maxbytes) }
   if $stderr_events_enabled { validate_legacy(Boolean, 'validate_bool', $stderr_events_enabled) }
   if $directory { validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $directory) }
