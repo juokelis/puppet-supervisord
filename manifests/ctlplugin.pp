@@ -10,13 +10,10 @@
 # http://supervisord.org/configuration.html#program-x-section-settings
 #
 define supervisord::ctlplugin(
-  $ctl_factory,
-  $ensure      = present,
+  String $ctl_factory,
+  $ensure             = present,
 ) {
   include supervisord
-
-  # parameter validation
-  validate_legacy(String, 'validate_string', $ctl_factory)
 
   concat::fragment { "ctlplugin:${name}":
     target  => $supervisord::config_file,

@@ -110,11 +110,11 @@ class supervisord::params {
   $log_path                = '/var/log/supervisor'
   $log_file                = 'supervisord.log'
   $logfile_maxbytes        = '50MB'
-  $logfile_backups         = '10'
+  $logfile_backups         = 10
   $log_level               = 'info'
   $nodaemon                = false
-  $minfds                  = '1024'
-  $minprocs                = '200'
+  $minfds                  = 1024
+  $minprocs                = 200
   $umask                   = '022'
   $manage_config           = true
   $config_include          = '/etc/supervisor.d'
@@ -139,7 +139,7 @@ class supervisord::params {
 
   $inet_server             = false
   $inet_server_hostname    = '127.0.0.1'
-  $inet_server_port        = '9001'
+  $inet_server_port        = 9001
   $inet_auth               = false
   $inet_username           = undef
   $inet_password           = undef

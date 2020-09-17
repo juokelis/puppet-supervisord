@@ -104,7 +104,7 @@ class { 'supervisord':
   unix_socket          => false,
   inet_server          => true,
   inet_server_hostname => '127.0.0.1',
-  inet_server_port     => '9001',
+  inet_server_port     => 9001,
   inet_auth            => false,
   inet_username        => undef,
   inet_password        => undef,
@@ -139,7 +139,7 @@ You almost certainly want to copy and add to the original templates, as they con
 ```puppet
 supervisord::program { 'myprogram':
   command             => 'command --args',
-  priority            => '100',
+  priority            => 100,
   program_environment => {
     'HOME'   => '/home/myuser',
     'PATH'   => '/bin:/sbin:/usr/bin:/usr/sbin',
@@ -153,7 +153,7 @@ You may also specify a variable for a hiera lookup to retreive your environment 
 ```puppet
 supervisord::program { 'myprogram':
   command  => 'command --args',
-  priority => '100',
+  priority => 100,
   env_var  => 'my_common_envs'
 }
 ```
@@ -194,8 +194,8 @@ supervisord::ctlplugin { 'laforge':
 ```puppet
 supervisord::eventlistener { 'mylistener':
   command  => 'command --args',
-  events   => ['PROCESS_STATE', 'PROCESS_STATE_START']
-  priority => '100',
+  events   => ['PROCESS_STATE', 'PROCESS_STATE_START'],
+  priority => 100,
   env_var  => 'my_common_envs'
 }
 ```

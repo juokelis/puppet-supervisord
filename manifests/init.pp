@@ -3,124 +3,90 @@
 # This class installs supervisord via pip
 #
 class supervisord(
-  $package_ensure          = $supervisord::params::package_ensure,
-  $package_name            = $supervisord::params::package_name,
-  $package_provider        = $supervisord::params::package_provider,
-  $package_install_options = $supervisord::params::package_install_options,
-  $service_manage          = $supervisord::params::service_manage,
-  $service_ensure          = $supervisord::params::service_ensure,
-  $service_enable          = $supervisord::params::service_enable,
-  $service_name            = $supervisord::params::service_name,
-  $service_restart         = $supervisord::params::service_restart,
-  $install_pip             = false,
-  $pip_proxy               = undef,
-  $install_init            = $supervisord::params::install_init,
-  $init_type               = $supervisord::params::init_type,
-  $init_mode               = $supervisord::params::init_mode,
-  $init_script             = $supervisord::params::init_script,
-  $init_script_template    = $supervisord::params::init_script_template,
-  $init_defaults           = $supervisord::params::init_defaults,
-  $init_defaults_template  = $supervisord::params::init_defaults_template,
-  $setuptools_url          = $supervisord::params::setuptools_url,
-  $executable              = $supervisord::params::executable,
-  $executable_ctl          = $supervisord::params::executable_ctl,
+  $package_ensure                                     = $supervisord::params::package_ensure,
+  $package_name                                       = $supervisord::params::package_name,
+  $package_provider                                   = $supervisord::params::package_provider,
+  $package_install_options                            = $supervisord::params::package_install_options,
+  $service_manage                                     = $supervisord::params::service_manage,
+  $service_ensure                                     = $supervisord::params::service_ensure,
+  $service_enable                                     = $supervisord::params::service_enable,
+  $service_name                                       = $supervisord::params::service_name,
+  $service_restart                                    = $supervisord::params::service_restart,
+  Boolean $install_pip                                = false,
+  Optional[Pattern[/^https?:\/\/.*$/]] $pip_proxy     = undef,
+  Boolean $install_init                               = $supervisord::params::install_init,
+  $init_type                                          = $supervisord::params::init_type,
+  $init_mode                                          = $supervisord::params::init_mode,
+  $init_script                                        = $supervisord::params::init_script,
+  $init_script_template                               = $supervisord::params::init_script_template,
+  $init_defaults                                      = $supervisord::params::init_defaults,
+  $init_defaults_template                             = $supervisord::params::init_defaults_template,
+  $setuptools_url                                     = $supervisord::params::setuptools_url,
+  $executable                                         = $supervisord::params::executable,
+  $executable_ctl                                     = $supervisord::params::executable_ctl,
 
-  $scl_enabled             = $supervisord::params::scl_enabled,
-  $scl_script              = $supervisord::params::scl_script,
+  $scl_enabled                                        = $supervisord::params::scl_enabled,
+  $scl_script                                         = $supervisord::params::scl_script,
 
-  $log_path                = $supervisord::params::log_path,
-  $log_file                = $supervisord::params::log_file,
-  $log_level               = $supervisord::params::log_level,
-  $logfile_maxbytes        = $supervisord::params::logfile_maxbytes,
-  $logfile_backups         = $supervisord::params::logfile_backups,
+  Stdlib::Absolutepath $log_path                      = $supervisord::params::log_path,
+  $log_file                                           = $supervisord::params::log_file,
+  Enum['critical', 'error', 'warn', 'info', 'debug', 'trace', 'blather'] $log_level = $supervisord::params::log_level,
+  Pattern[/^[0-9]*(?:KB|MB|GB)?/] $logfile_maxbytes   = $supervisord::params::logfile_maxbytes,
+  Integer $logfile_backups                            = $supervisord::params::logfile_backups,
 
-  $cfgreload_program       = $supervisord::params::cfgreload_program,
-  $cfgreload_fcgi_program  = $supervisord::params::cfgreload_fcgi_program,
-  $cfgreload_eventlistener = $supervisord::params::cfgreload_eventlistener,
-  $cfgreload_rpcinterface  = $supervisord::params::cfgreload_rpcinterface,
+  $cfgreload_program                                  = $supervisord::params::cfgreload_program,
+  $cfgreload_fcgi_program                             = $supervisord::params::cfgreload_fcgi_program,
+  $cfgreload_eventlistener                            = $supervisord::params::cfgreload_eventlistener,
+  $cfgreload_rpcinterface                             = $supervisord::params::cfgreload_rpcinterface,
 
-  $run_path             = $supervisord::params::run_path,
-  $pid_file             = $supervisord::params::pid_file,
-  $nodaemon             = $supervisord::params::nodaemon,
-  $minfds               = $supervisord::params::minfds,
-  $minprocs             = $supervisord::params::minprocs,
-  $manage_config        = $supervisord::params::manage_config,
-  $config_include       = $supervisord::params::config_include,
-  $config_include_purge = false,
-  $config_file          = $supervisord::params::config_file,
-  $config_file_mode     = $supervisord::params::config_file_mode,
-  $config_dirs          = undef,
-  $umask                = $supervisord::params::umask,
+  Stdlib::Absolutepath $run_path                      = $supervisord::params::run_path,
+  $pid_file                                           = $supervisord::params::pid_file,
+  Boolean $nodaemon                                   = $supervisord::params::nodaemon,
+  Integer $minfds                                     = $supervisord::params::minfds,
+  Integer $minprocs                                   = $supervisord::params::minprocs,
+  $manage_config                                      = $supervisord::params::manage_config,
+  Stdlib::Absolutepath $config_include                = $supervisord::params::config_include,
+  $config_include_purge                               = false,
+  $config_file                                        = $supervisord::params::config_file,
+  Pattern[/^0[0-7][0-7][0-7]$/] $config_file_mode     = $supervisord::params::config_file_mode,
+  Optional[Array] $config_dirs                        = undef,
+  Pattern[/^0[0-7][0-7]$/] $umask                     = $supervisord::params::umask,
 
-  $ctl_socket           = $supervisord::params::ctl_socket,
+  Enum['unix', 'inet'] $ctl_socket                    = $supervisord::params::ctl_socket,
 
-  $unix_socket          = $supervisord::params::unix_socket,
-  $unix_socket_file     = $supervisord::params::unix_socket_file,
-  $unix_socket_mode     = $supervisord::params::unix_socket_mode,
-  $unix_socket_owner    = $supervisord::params::unix_socket_owner,
-  $unix_socket_group    = $supervisord::params::unix_socket_group,
-  $unix_auth            = $supervisord::params::unix_auth,
-  $unix_username        = $supervisord::params::unix_username,
-  $unix_password        = $supervisord::params::unix_password,
+  Boolean $unix_socket                                = $supervisord::params::unix_socket,
+  $unix_socket_file                                   = $supervisord::params::unix_socket_file,
+  Pattern[/^[0-7][0-7][0-7][0-7]$/] $unix_socket_mode = $supervisord::params::unix_socket_mode,
+  $unix_socket_owner                                  = $supervisord::params::unix_socket_owner,
+  $unix_socket_group                                  = $supervisord::params::unix_socket_group,
+  Boolean $unix_auth                                  = $supervisord::params::unix_auth,
+  Optional[String] $unix_username                     = $supervisord::params::unix_username,
+  Optional[String] $unix_password                     = $supervisord::params::unix_password,
 
-  $inet_server          = $supervisord::params::inet_server,
-  $inet_server_hostname = $supervisord::params::inet_server_hostname,
-  $inet_server_port     = $supervisord::params::inet_server_port,
-  $inet_auth            = $supervisord::params::inet_auth,
-  $inet_username        = $supervisord::params::inet_username,
-  $inet_password        = $supervisord::params::inet_password,
+  Boolean $inet_server                                = $supervisord::params::inet_server,
+  $inet_server_hostname                               = $supervisord::params::inet_server_hostname,
+  Integer[0, 65535] $inet_server_port                 = $supervisord::params::inet_server_port,
+  Boolean $inet_auth                                  = $supervisord::params::inet_auth,
+  Optional[String] $inet_username                     = $supervisord::params::inet_username,
+  Optional[String] $inet_password                     = $supervisord::params::inet_password,
 
-  $user                 = $supervisord::params::user,
-  $group                = $supervisord::params::group,
-  $identifier           = undef,
-  $childlogdir          = undef,
-  $environment          = undef,
-  $global_environment   = undef,
-  $env_var              = undef,
-  $directory            = undef,
-  $strip_ansi           = false,
-  $nocleanup            = false,
+  $user                                               = $supervisord::params::user,
+  $group                                              = $supervisord::params::group,
+  $identifier                                         = undef,
+  Optional[Stdlib::Absolutepath] $childlogdir         = undef,
+  Optional[Hash] $environment                         = undef,
+  Optional[Hash] $global_environment                  = undef,
+  Optional[Hash] $env_var                             = undef,
+  Optional[Stdlib::Absolutepath] $directory           = undef,
+  Boolean $strip_ansi                                 = false,
+  Boolean $nocleanup                                  = false,
 
-  $eventlisteners       = {},
-  $fcgi_programs        = {},
-  $groups               = {},
-  $programs             = {}
+  Hash $eventlisteners                                = {},
+  Hash $fcgi_programs                                 = {},
+  Hash $groups                                        = {},
+  Hash $programs                                      = {}
 
 ) inherits supervisord::params {
-
-  validate_legacy(Boolean, 'validate_bool', $install_pip)
-  validate_legacy(Boolean, 'validate_bool', $install_init)
-  validate_legacy(Boolean, 'validate_bool', $nodaemon)
-  validate_legacy(Boolean, 'validate_bool', $unix_socket)
-  validate_legacy(Boolean, 'validate_bool', $unix_auth)
-  validate_legacy(Boolean, 'validate_bool', $inet_server)
-  validate_legacy(Boolean, 'validate_bool', $inet_auth)
-  validate_legacy(Boolean, 'validate_bool', $strip_ansi)
-  validate_legacy(Boolean, 'validate_bool', $nocleanup)
-
-  validate_legacy(Hash, 'validate_hash', $eventlisteners)
-  validate_legacy(Hash, 'validate_hash', $fcgi_programs)
-  validate_legacy(Hash, 'validate_hash', $groups)
-  validate_legacy(Hash, 'validate_hash', $programs)
-
-  validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $config_include)
-  validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $log_path)
-  validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $run_path)
-  if $childlogdir { validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $childlogdir) }
-  if $directory { validate_legacy(Stdlib::Compat::Absolute_Path, 'validate_absolute_path', $directory) }
-
-  $log_levels = ['^critical$', '^error$', '^warn$', '^info$', '^debug$', '^trace$', '^blather$']
-  validate_legacy('Optional[String]', 'validate_re', $log_level, $log_levels)
-  validate_legacy('Optional[String]', 'validate_re', $logfile_maxbytes, ['^[0-9]*(?:KB|MB|GB)?'])
-  validate_legacy('Optional[String]', 'validate_re', $umask, ['^0[0-7][0-7]$'])
-  validate_legacy('Optional[String]', 'validate_re', $unix_socket_mode, ['^[0-7][0-7][0-7][0-7]$'])
-  validate_legacy('Optional[String]', 'validate_re', $ctl_socket, ['^unix$', '^inet$'])
-  validate_legacy('Optional[String]', 'validate_re', $config_file_mode, ['^0[0-7][0-7][0-7]$'])
-  if $pip_proxy { validate_legacy('Optional[String]', 'validate_re', $pip_proxy, ['^https?:\/\/.*$']) }
-  if $logfile_backups !~ Integer { validate_legacy('Optional[String]', 'validate_re', $logfile_backups, ['^\d+'])}
-  if $minfds !~ Integer { validate_legacy('Optional[String]', 'validate_re', $minfds, ['^\d+'])}
-  if $minprocs !~ Integer { validate_legacy('Optional[String]', 'validate_re', $minprocs, ['^\d+'])}
-  if $inet_server_port !~ Integer { validate_legacy('Optional[String]', 'validate_re', $inet_server_port, ['^\d+'])}
 
   if $unix_socket and $inet_server {
     $use_ctl_socket = $ctl_socket
@@ -145,14 +111,12 @@ class supervisord(
     $ctl_password  = $supervisord::inet_password
   }
 
-  if $unix_auth {
-    validate_legacy(String, 'validate_string', $unix_username)
-    validate_legacy(String, 'validate_string', $unix_password)
+  if $unix_auth and (!$unix_username or !$unix_password) {
+    fail('[supervisord] unix_username and unix_password must be defined')
   }
 
-  if $inet_auth {
-    validate_legacy(String, 'validate_string', $inet_username)
-    validate_legacy(String, 'validate_string', $inet_password)
+  if $inet_auth and (!$inet_username or !$inet_password) {
+    fail('[supervisord] inet_username and inet_password must be defined')
   }
 
   # Handle deprecated $environment variable
@@ -163,17 +127,14 @@ class supervisord(
   }
 
   if $env_var {
-    validate_legacy(Hash, 'validate_hash', $env_var)
     $env_hash = lookup($env_var)
     $env_string = hash2csv($env_hash)
   }
   elsif $_global_environment {
-    validate_legacy(Hash, 'validate_hash', $_global_environment)
     $env_string = hash2csv($_global_environment)
   }
 
   if $config_dirs {
-    validate_legacy(Array, 'validate_array', $config_dirs)
     $config_include_string = join($config_dirs, ' ')
   }
   else {

@@ -14,7 +14,7 @@ describe 'supervisord::group', :type => :define do
       should contain_file('/etc/supervisor.d/group_foo.conf').with_content(/programs=bar,baz/)
     end
     context '100' do
-      let(:params) {{ :priority => '100', :programs => ['bar', 'baz'] }}
+      let(:params) {{ :priority => 100, :programs => ['bar', 'baz'] }}
       it { should contain_file('/etc/supervisor.d/group_foo.conf').with_content(/priority=100/) }
       it { should contain_file('/etc/supervisor.d/group_foo.conf').with_content(/programs=bar,baz/) }
     end
