@@ -31,7 +31,7 @@ describe 'supervisord::program' do
         include supervisord
         supervisord::program { 'test':
           command => 'echo',
-          priority => '100',
+          priority => 100,
           program_environment => {
             'HOME' => '/root',
             'PATH' => '/bin',
@@ -63,7 +63,7 @@ describe 'supervisord::fcgi-program' do
         supervisord::fcgi_program { 'test':
           socket              => 'tcp://localhost:1000',
           command             => 'echo',
-          priority            => '100',
+          priority            => 100,
           program_environment => {
             'HOME' => '/root',
             'PATH' => '/bin',
@@ -96,7 +96,7 @@ describe 'supervisord::group' do
         include supervisord
         supervisord::group { 'test':
           programs => ['test'],
-          priority => '100',
+          priority => 100,
         }
       EOS
 

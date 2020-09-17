@@ -211,11 +211,11 @@ describe 'supervisord' do
 
   describe '#config_file' do
     context 'default' do
-      it { should contain_file('/etc/supervisord.conf') }
+      it { should contain_concat('/etc/supervisord.conf') }
     end
     context 'is specified' do
       let(:params) {{ :config_file => '/opt/supervisord/supervisor.conf' }}
-      it { should contain_file('/opt/supervisord/supervisor.conf') }
+      it { should contain_concat('/opt/supervisord/supervisor.conf') }
     end
   end
 
