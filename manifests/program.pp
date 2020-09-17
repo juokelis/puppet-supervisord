@@ -69,10 +69,10 @@ define supervisord::program(
   # convert environment data into a csv
   if $env_var {
     $env_hash = lookup($env_var, Hash, 'hash')
-    $env_string = hash2csv($env_hash)
+    $env_string = supervisord::hash2csv($env_hash)
   }
   elsif $_program_environment {
-    $env_string = hash2csv($_program_environment)
+    $env_string = supervisord::hash2csv($_program_environment)
   }
 
   # Reload default with override

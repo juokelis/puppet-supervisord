@@ -128,10 +128,10 @@ class supervisord(
 
   if $env_var {
     $env_hash = lookup($env_var)
-    $env_string = hash2csv($env_hash)
+    $env_string = supervisord::hash2csv($env_hash)
   }
   elsif $_global_environment {
-    $env_string = hash2csv($_global_environment)
+    $env_string = supervisord::hash2csv($_global_environment)
   }
 
   if $config_dirs {

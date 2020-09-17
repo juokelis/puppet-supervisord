@@ -70,10 +70,10 @@ define supervisord::eventlistener(
   # convert environment data into a csv
   if $env_var {
     $env_hash = lookup($env_var, Hash, 'hash')
-    $env_string = hash2csv($env_hash)
+    $env_string = supervisord::hash2csv($env_hash)
   }
   elsif $_event_environment {
-    $env_string = hash2csv($_event_environment)
+    $env_string = supervisord::hash2csv($_event_environment)
   }
 
   # Reload default with override
@@ -83,7 +83,7 @@ define supervisord::eventlistener(
   }
 
   if $events {
-    $events_string = array2csv($events)
+    $events_string = supervisord::array2csv($events)
   }
 
   $conf = "${supervisord::config_include}/eventlistener_${name}.conf"

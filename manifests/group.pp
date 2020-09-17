@@ -14,7 +14,7 @@ define supervisord::group (
 
   include supervisord
 
-  $progstring = array2csv($programs)
+  $progstring = supervisord::array2csv($programs)
   $conf = "${supervisord::config_include}/group_${name}.conf"
 
   file { $conf:
